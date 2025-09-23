@@ -1,0 +1,12 @@
+olist_pipeline:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: localhost
+      user: postgres
+      password: Hathevinh@2003
+      port: 5432
+      dbname: olist_data_modelling
+      schema: dev
+      threads: 10
