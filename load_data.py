@@ -15,7 +15,7 @@ cur.execute("CREATE SCHEMA IF NOT EXISTS dev_raw;")
 
 # -------- ORDERS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.orders (
+    CREATE TABLE IF NOT EXISTS dev_raw.order (
         order_id TEXT,
         customer_id TEXT,
         order_status TEXT,
@@ -27,14 +27,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.orders
+    COPY dev_raw.order
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_orders_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- ORDER ITEMS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.order_items (
+    CREATE TABLE IF NOT EXISTS dev_raw.order_item (
         order_id TEXT,
         order_item_id INT,
         product_id TEXT,
@@ -45,14 +45,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.order_items
+    COPY dev_raw.order_item
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_order_items_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- CUSTOMERS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.customers (
+    CREATE TABLE IF NOT EXISTS dev_raw.customer (
         customer_id TEXT,
         customer_unique_id TEXT,
         customer_zip_code_prefix INT,
@@ -61,14 +61,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.customers
+    COPY dev_raw.customer
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_customers_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- PRODUCTS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.products (
+    CREATE TABLE IF NOT EXISTS dev_raw.product (
         product_id TEXT,
         product_category_name TEXT,
         product_name_length INT,
@@ -81,14 +81,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.products
+    COPY dev_raw.product
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_products_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- SELLERS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.sellers (
+    CREATE TABLE IF NOT EXISTS dev_raw.seller (
         seller_id TEXT,
         seller_zip_code_prefix INT,
         seller_city TEXT,
@@ -96,14 +96,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.sellers
+    COPY dev_raw.seller
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_sellers_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- PAYMENTS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.payments (
+    CREATE TABLE IF NOT EXISTS dev_raw.payment (
         order_id TEXT,
         payment_sequential INT,
         payment_type TEXT,
@@ -112,14 +112,14 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.payments
+    COPY dev_raw.payment
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_order_payments_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
 
 # -------- REVIEWS --------
 cur.execute("""
-    CREATE TABLE IF NOT EXISTS dev_raw.reviews (
+    CREATE TABLE IF NOT EXISTS dev_raw.review (
         review_id TEXT,
         order_id TEXT,
         review_score INT,
@@ -130,7 +130,7 @@ cur.execute("""
     );
 """)
 cur.execute("""
-    COPY dev_raw.reviews
+    COPY dev_raw.review
     FROM 'D:/ecommerce-analytics-pipeline/datasets/olist_order_reviews_dataset.csv'
     DELIMITER ',' CSV HEADER;
 """)
