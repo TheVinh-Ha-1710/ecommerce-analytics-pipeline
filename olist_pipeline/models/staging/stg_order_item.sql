@@ -6,4 +6,4 @@ select
     cast(shipping_limit_date as timestamp) as shipping_limit_date,
     price,
     freight_value
-from {{ source('olist', 'order_items') }}
+from {{ source('olist', 'order_item') }}

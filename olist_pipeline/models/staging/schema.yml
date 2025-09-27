@@ -1,0 +1,204 @@
+version: 2
+
+models:
+  - name: stg_customer
+    description: "Staging table for customers"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        tests:
+          - not_null
+          - unique
+      - name: customer_city
+        description: "City of the customer"
+        tests:
+          - not_null
+      - name: customer_state
+        description: "State of the customer"
+        tests:
+          - not_null
+
+  - name: stg_seller
+    description: "Staging table for sellers"
+    columns:
+      - name: seller_id
+        description: "Unique identifier for each seller"
+        tests:
+          - not_null
+          - unique
+      - name: seller_city
+        description: "City of the seller"
+        tests:
+          - not_null
+      - name: seller_state
+        description: "State of the seller"
+        tests:
+          - not_null
+
+  - name: stg_product
+    description: "Staging table for products"
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product"
+        tests:
+          - not_null
+          - unique
+      - name: category_name
+        description: "Category name of the product"
+        tests:
+          - not_null
+      - name: weight_g
+        description: "Weight of the product in grams"
+        tests:
+          - not_null
+          - positive_value
+      - name: width_cm
+        description: "Width of the product in centimeters"
+        tests:
+          - not_null
+          - positive_value
+      - name: length_cm
+        description: "Length of the product in centimeters"
+        tests:
+          - not_null
+          - positive_value
+      - name: height_cm
+        description: "Height of the product in centimeters"
+        tests:
+          - not_null
+          - positive_value
+
+  - name: stg_order
+    description: "Staging table for orders"
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order"
+        tests:
+          - not_null
+          - unique
+      - name: customer_id
+        description: "Identifier for the customer who placed the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_customer')
+              field: customer_id
+      - name: order_status
+        description: "Status of the order"
+        tests:
+          - not_null
+      - name: purchase_ts
+        description: "Timestamp when the order was purchased"
+        tests:
+          - not_null
+      - name: approved_at
+        description: "Timestamp when the order was approved"
+      - name: delivered_carrier_ts
+        description: "Timestamp when the order was delivered to the carrier"
+      - name: delivered_customer_ts
+        description: "Timestamp when the order was delivered to the customer"
+      - name: estimated_delivery_dt
+        description: "Estimated delivery date for the order"
+        tests:
+          - not_null
+
+  - name: stg_order_item
+    description: "Staging table for order items"
+    columns:
+      - name: order_id
+        description: "Identifier for the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_order')
+              field: order_id
+      - name: order_item_id
+        description: "Unique identifier for each item in the order"
+        tests:
+          - not_null
+      - name: product_id
+        description: "Identifier for the product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_product')
+              field: product_id
+      - name: seller_id
+        description: "Identifier for the seller of the product"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_seller')
+              field: seller_id
+      - name: shipping_limit_date
+        description: "Shipping limit date for the order item"
+        tests:
+          - not_null
+      - name: price
+        description: "Price of the order item"
+        tests:
+          - not_null
+          - positive_value
+      - name: freight_value
+        description: "Freight value for the order item"
+        tests:
+          - not_null
+          - positive_value
+
+  - name: stg_payment
+    description: "Staging table for payments"
+    columns:
+      - name: order_id
+        description: "Identifier for the order"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_order')
+              field: order_id
+      - name: payment_sequential
+        description: "Sequential number of the payment"
+        tests:
+          - not_null
+      - name: payment_type
+        description: "Type of payment"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['credit_card', 'boleto', 'voucher', 'debit_card', 'not_defined']
+      - name: payment_installments
+        description: "Number of installments for the payment"
+        tests:
+          - not_null
+          - positive_value
+      - name: payment_value
+        description: "Value of the payment"
+        tests:
+          - not_null
+          - positive_value
+
+  - name: stg_review
+    description: "Staging table for reviews"
+    columns:
+      - name: review_id
+        description: "Unique identifier for each review, might be repeated for multiple answer timestamp"
+        tests:
+          - not_null
+      - name: order_id
+        description: "Identifier for the order being reviewed"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_order')
+              field: order_id
+      - name: review_score
+        description: "Score given in the review"
+        tests:
+          - not_null
+          - accepted_values:
+              values: [1, 2, 3, 4, 5]
+      - name: creation_date
+        description: "Date when the review was created"
+        tests:
+          - not_null
+      - name: review_answer_ts
+        description: "Timestamp when the review was answered"

@@ -1,0 +1,118 @@
+version: 2
+
+models:
+  - name: dim_customer
+    description: "Dimension table for customer"
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer"
+        tests:
+          - not_null
+          - unique
+      - name: customer_city
+        description: "City of the customer"
+        tests:
+          - not_null
+      - name: customer_state
+        description: "State of the customer"
+        tests:
+          - not_null
+
+  - name: dim_product
+    description: "Dimension table for product"
+    columns:
+      - name: product_id
+        description: "Unique identifier for product"
+        tests:
+          - not_null
+          - unique
+      - name: category_name
+        description: "Category name of product"
+        tests:
+          - not_null
+      - name: weight_g
+        description: "Weight of product in grams"
+        tests:
+          - not_null
+          - positive_value
+      - name: dimension_cm
+        description: "Dimension of product in centimeters (width x length x height)"
+        tests:
+          - not_null
+
+  - name: dim_date
+    description: "Date dimension for all time-based analysis, generated with dbt_utils.date_spine"
+    columns:
+      - name: date_key
+        description: "Primary key for date dimension (daily grain)"
+        tests:
+          - not_null
+          - unique
+      - name: year
+        description: "Calendar year extracted from date"
+      - name: quarter
+        description: "Calendar quarter (1–4) extracted from date"
+      - name: month
+        description: "Calendar month number (1–12)"
+      - name: month_name
+        description: "Full month name (e.g., January, February, etc.)"
+      - name: week
+        description: "ISO week number of the year"
+      - name: day_of_week
+        description: "Day of week number (0 = Sunday, 1 = Monday, …)"
+      - name: weekday_name
+        description: "Day name (e.g., Monday, Tuesday, etc.)"
+      - name: season
+        description: "Season classification based on month (Winter, Spring, Summer, Fall)"
+      - name: month_start
+        description: "First date of the month"
+      - name: quarter_start
+        description: "First date of the quarter"
+      - name: year_start
+        description: "First date of the year"
+
+  - name: fact_review
+    description: "Fact table containing aggregated review metrics at the order level"
+    columns:
+      - name: order_id
+        description: "Foreign key to fact_sales.order_id. One row per order."
+        tests:
+          - not_null
+          - unique
+      - name: avg_score
+        description: "Average review score for the order (if multiple reviews exist)."
+      - name: creation_date
+        description: "Earliest review creation date for the order. Useful for time-based analysis."
+        tests:
+          - not_null
+
+  - name: fact_sales
+    description: "Fact table at the order level, combining orders, order items, payments, and review data"
+    columns:
+      - name: order_id
+        description: "Primary key of the order. One row per order."
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('stg_order')
+              field: order_id
+      - name: customer_id
+        description: "Foreign key to dim_customer.customer_id"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: order_date
+        description: "Date when the order was placed. FK to dim_date.date_key."
+        tests:
+          - not_null
+      - name: num_items
+        description: "Total number of items in the order"
+      - name: revenue
+        description: "Total payment value of the order"
+      - name: freight
+        description: "Total freight (shipping) cost of the order"
+      - name: review_score
+        description: "Average review score for the order (from fact_reviews)"
