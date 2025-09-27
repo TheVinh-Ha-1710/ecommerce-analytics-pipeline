@@ -35,8 +35,12 @@ This project is built with the following stack:
 The marts layer is modeled using a **Star Schema** approach.  
 It includes fact tables for sales and reviews, and dimension tables for customers, products, and dates.  
 
-**Star Schema Diagram**:  
+**Star Schema Diagram**:
+<div align="center">
+
 ![Star Schema](assets/star_schema.png)
+
+</div>
 
 ---
 
