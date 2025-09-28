@@ -1,8 +1,9 @@
 # Olist E-commerce Analytics Report Pipeline
 
 ## 📌 Overview and Datasets
-This project analyzes the Brazilian e-commerce public dataset from **Olist**.  
-The raw dataset includes multiple CSV files containing information on customers, orders, products, reviews, and payments.  
+In this project, I build an end-to-end analytics pipeline for the [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).  
+I automate the process of **data transformation, modeling, and visualization**, turning raw CSV files into meaningful insights.  
+The original dataset is relational data schema with many tables such as customers, orders, products, reviews, and payments.  
 
 Key dataset entities:
 - **Customers**: Customer details such as unique IDs, city, and state.
@@ -19,7 +20,7 @@ Key dataset entities:
 ---
 
 ## ⚙️ Project Design / Techstack
-This project is built with the following stack:  
+I design the project workflow with the following stack:  
 - **dbt** for data transformation (staging → marts).  
 - **Postgres** as the data warehouse.  
 - **Power BI** for reporting and visualization.  
@@ -32,8 +33,8 @@ This project is built with the following stack:
 ---
 
 ## 🏗️ Transformed Schema (Marts Layer Design)
-The marts layer is modeled using a **Star Schema** approach.  
-It includes fact tables for sales and reviews, and dimension tables for customers, products, and dates.  
+I model the marts layer using a **Star Schema** approach.  
+It includes fact tables for sales and reviews, and dimension tables for customers, seller, products, and dates.  
 
 **Star Schema Diagram**:
 <div align="center">
