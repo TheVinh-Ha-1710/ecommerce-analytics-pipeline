@@ -1,12 +1,16 @@
 import psycopg2
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # Load environment variables
 
 # Connect to Postgres
 con = psycopg2.connect(
-    host="localhost",
-    database="olist_data_modelling",
-    user="postgres",
-    password="Hathevinh@2003",
-    port="5432"
+    host=os.getenv("POSTGRES_HOST"),
+    database=os.getenv("POSTGRES_DATABASE"),
+    user=os.getenv("POSTGRES_USER"),
+    password=os.getenv("POSTGRES_PASSWORD"),
+    port=os.getenv("POSTGRES_PORT")
 )
 cur = con.cursor()
 

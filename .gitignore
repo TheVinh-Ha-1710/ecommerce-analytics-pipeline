@@ -9,3 +9,6 @@ tests/
 
 # Python
 .venv
+
+# Environment
+.env
